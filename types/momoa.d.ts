@@ -1,6 +1,5 @@
 declare module '@humanwhocodes/momoa' {
   import { JSONValue } from 'type-fest';
-  interface AST {}
 
   type ParseOptions = {
     ranges?: boolean;
@@ -8,59 +7,63 @@ declare module '@humanwhocodes/momoa' {
     tokens?: boolean;
   };
 
-  type Loc = {
+  export type Loc = {
     line: number;
     column: number;
     offset: number;
   };
 
+  export type LocRange = {
+    start: Loc;
+    end: Loc;
+  };
+
+  export type Range = [number, number];
+
   interface BaseNode {
-    loc: {
-      start: Loc;
-      end: Loc;
-    };
+    loc: LocRange;
     range: {
-      range: [number, number];
+      range: Range;
     };
   }
 
-  interface DocumentNode extends BaseNode {
+  export interface DocumentNode extends BaseNode {
     type: 'Document';
     body: Node;
   }
 
-  interface BooleanNode extends BaseNode {
+  export interface BooleanNode extends BaseNode {
     type: 'Boolean';
     value: boolean;
   }
 
-  interface NumberNode extends BaseNode {
+  export interface NumberNode extends BaseNode {
     type: 'Number';
     value: number;
   }
 
-  interface NullNode extends BaseNode {
+  export interface NullNode extends BaseNode {
     type: 'Null';
     value: null;
   }
 
-  interface StringNode extends BaseNode {
+  export interface StringNode extends BaseNode {
     type: 'String';
     value: string;
   }
 
-  interface ObjectNode extends BaseNode {
+  export interface ObjectNode extends BaseNode {
     type: 'Object';
     name: StringNode;
     members: MemberNode[];
   }
 
-  interface ArrayNode extends BaseNode {
+  export interface ArrayNode extends BaseNode {
     type: 'Array';
     elements: Node[];
   }
 
-  interface MemberNode extends BaseNode {
+  export interface MemberNode extends BaseNode {
     type: 'Member';
     name: StringNode;
     value: Node;
@@ -68,6 +71,7 @@ declare module '@humanwhocodes/momoa' {
 
   type Node =
     | MemberNode
+    | ObjectNode
     | StringNode
     | NumberNode
     | DocumentNode
@@ -82,7 +86,7 @@ declare module '@humanwhocodes/momoa' {
     phase: Phase;
   }
 
-  export function parse(jsonStr: string, options?: ParseOptions): AST;
-  export function iterator(ast: AST): Generator<IteratorState>;
-  export function evaluate(ast: AST): JSONValue;
+  export function parse(jsonStr: string, options?: ParseOptions): DocumentNode;
+  export function iterator(ast: Node): Generator<IteratorState>;
+  export function evaluate(ast: Node): JSONValue;
 }

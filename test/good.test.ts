@@ -5,7 +5,7 @@ describe('check', () => {
   it('works', () => {
     const obj = {
       type: 'Point',
-      coordinates: true,
+      coordinates: [0, 1],
     };
     expect(check(JSON.stringify(obj))).toEqual(obj);
   });
