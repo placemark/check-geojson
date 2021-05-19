@@ -1,33 +1,10 @@
-import { HintIssue, HintError } from './errors';
+import { HintIssue } from './errors';
 import { ObjectNode } from '@humanwhocodes/momoa';
+import { getMember } from './get_member';
+import { getArray } from './get_array';
 
 export function getCoordinates(issues: HintIssue[], node: ObjectNode) {
-  const coordinatesMember = node.members.find(member => {
-    return member.name.value === 'coordinates';
-  });
-
-  if (!coordinatesMember) {
-    throw new HintError([
-      {
-        code: 'invalid_type',
-        message:
-          'This GeoJSON object requires a coordinates member but it is missing.',
-        loc: node.loc,
-      },
-    ]);
-  }
-
-  const value = coordinatesMember.value;
-
-  if (value.type !== 'Array') {
-    issues.push({
-      code: 'invalid_type',
-      message: 'The coordinates member must be an array.',
-      loc: value.loc,
-    });
-
-    return null;
-  }
-
-  return value;
+  const coordinatesMember = getMember(issues, node, 'coordinates');
+  if (!coordinatesMember) return null;
+  return getArray(issues, coordinatesMember.value);
 }

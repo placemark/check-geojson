@@ -1,14 +1,29 @@
 import { HintIssue } from './errors';
 import { enforcePosition } from './enforce_position';
-import { ArrayNode } from '@humanwhocodes/momoa';
+import { Node, ArrayNode } from '@humanwhocodes/momoa';
+
+function getArray(issues: HintIssue[], node: Node): ArrayNode | null {
+  if (node.type !== 'Array') {
+    issues.push({
+      code: 'invalid_type',
+      message: 'Expected to find an array of positions here.',
+      loc: node.loc,
+    });
+    return null;
+  }
+  return node;
+}
 
 export function enforcePositionArray(
   issues: HintIssue[],
-  node: ArrayNode | null,
+  node: Node | null,
   kind?: 'polygon' | 'linestring'
 ) {
   // This error has already been caught. Allow a no-op for simplicity.
   if (node === null) return;
+
+  node = getArray(issues, node);
+  if (!node) return;
 
   for (let element of node.elements) {
     if (element.type !== 'Array') {
@@ -43,5 +58,37 @@ export function enforcePositionArray(
         });
       }
       break;
+  }
+}
+
+export function enforcePositionArray2(
+  issues: HintIssue[],
+  node: Node | null,
+  kind?: 'polygon' | 'linestring'
+) {
+  // This error has already been caught. Allow a no-op for simplicity.
+  if (node === null) return;
+
+  node = getArray(issues, node);
+  if (!node) return;
+
+  for (let element of node.elements) {
+    enforcePositionArray(issues, element, kind);
+  }
+}
+
+export function enforcePositionArray3(
+  issues: HintIssue[],
+  node: ArrayNode | null,
+  kind?: 'polygon' | 'linestring'
+) {
+  // This error has already been caught. Allow a no-op for simplicity.
+  if (node === null) return;
+
+  node = getArray(issues, node);
+  if (!node) return;
+
+  for (let element of node.elements) {
+    enforcePositionArray2(issues, element, kind);
   }
 }

@@ -3,23 +3,34 @@ import { GeoJSON } from 'geojson';
 import { HintIssue, HintError } from './errors';
 import { GEOJSON_TYPES } from './types';
 import { getType } from './get_type';
+import { getMember } from './get_member';
+import { getArray } from './get_array';
 import { getCoordinates } from './get_coordinates';
 import { enforcePosition } from './enforce_position';
-import { enforcePositionArray } from './enforce_position_array';
+import {
+  enforcePositionArray,
+  enforcePositionArray2,
+  enforcePositionArray3,
+} from './enforce_position_array';
 import { forbidConfusingProperties } from './forbid_confusing_properties';
 
 function checkLineString(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray(issues, getCoordinates(issues, node), 'linestring');
   forbidConfusingProperties(issues, node);
 }
+
 function checkMultiLineString(issues: HintIssue[], node: ObjectNode) {
+  enforcePositionArray2(issues, getCoordinates(issues, node), 'linestring');
   forbidConfusingProperties(issues, node);
 }
 
 function checkPolygon(issues: HintIssue[], node: ObjectNode) {
+  enforcePositionArray2(issues, getCoordinates(issues, node), 'polygon');
   forbidConfusingProperties(issues, node);
 }
+
 function checkMultiPolygon(issues: HintIssue[], node: ObjectNode) {
+  enforcePositionArray3(issues, getCoordinates(issues, node), 'polygon');
   forbidConfusingProperties(issues, node);
 }
 
@@ -35,10 +46,27 @@ function checkMultiPoint(issues: HintIssue[], node: ObjectNode) {
 
 function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
   forbidConfusingProperties(issues, node);
+  const geometriesMember = getArray(
+    issues,
+    getMember(issues, node, 'geometries')
+  );
+  if (!geometriesMember) return;
+  for (let element of geometriesMember.elements) {
+    checkObject(issues, element);
+  }
 }
 
-function checkFeature(issues: HintIssue[], node: ObjectNode) {}
-function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {}
+function checkFeature(issues: HintIssue[], node: ObjectNode) {
+  const geometry = getMember(issues, node, 'geometry');
+  checkObject(issues, geometry);
+}
+function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {
+  const featuresMember = getArray(issues, getMember(issues, node, 'features'));
+  if (!featuresMember) return;
+  for (let feature of featuresMember.elements) {
+    checkFeature(issues, feature);
+  }
+}
 
 const CHECKERS: Record<
   GeoJSON['type'],
