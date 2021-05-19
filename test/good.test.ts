@@ -1,5 +1,5 @@
 import { check } from '../src';
-import { readFileSync, readdirSync } from 'fs';
+// import { readFileSync, readdirSync } from 'fs';
 
 describe('check', () => {
   it('works', () => {
@@ -7,12 +7,9 @@ describe('check', () => {
       check(
         JSON.stringify({
           type: 'Point',
-          coordinates: [0, 0],
+          coordinates: true,
         })
       )
-    ).toEqual({
-      type: 'Point',
-      coordinates: [0, 0],
-    });
+    ).toEqual([]);
   });
 });

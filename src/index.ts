@@ -5,9 +5,10 @@ export const check = (jsonStr: string) => {
     ranges: true,
   });
 
-  for (const { node, phase } of iterator(ast)) {
-    console.log(node.type);
+  for (const { node, phase, parent } of iterator(ast)) {
+    console.log(node);
     console.log(phase);
+    console.log(parent);
   }
 
   return [];
