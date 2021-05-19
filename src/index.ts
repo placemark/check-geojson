@@ -4,6 +4,8 @@ import { HintIssue, HintError } from './errors';
 import { GEOJSON_TYPES } from './types';
 import { getType } from './get_type';
 import { getCoordinates } from './get_coordinates';
+import { enforcePosition } from './enforce_position';
+import { forbidConfusingProperties } from './forbid_confusing_properties';
 
 function checkLineString(issues: HintIssue[], node: ObjectNode) {}
 function checkMultiLineString(issues: HintIssue[], node: ObjectNode) {}
@@ -12,7 +14,9 @@ function checkPolygon(issues: HintIssue[], node: ObjectNode) {}
 function checkMultiPolygon(issues: HintIssue[], node: ObjectNode) {}
 
 function checkPoint(issues: HintIssue[], node: ObjectNode) {
-  getCoordinates(issues, node);
+  const coordinates = getCoordinates(issues, node);
+  forbidConfusingProperties(issues, node);
+  if (coordinates) enforcePosition(issues, coordinates);
 }
 
 function checkMultiPoint(issues: HintIssue[], node: ObjectNode) {}

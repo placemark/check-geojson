@@ -15,4 +15,12 @@ describe('check', () => {
       check(JSON.stringify({ type: 'Point', coordinates: null }))
     ).toThrow(HintError);
   });
+
+  it('forbidden properties', () => {
+    expect(() =>
+      check(
+        JSON.stringify({ type: 'Point', coordinates: [1, 2], properties: {} })
+      )
+    ).toThrow(HintError);
+  });
 });
