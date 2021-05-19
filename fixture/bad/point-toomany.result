@@ -1,0 +1,7 @@
+[
+  {
+    "message": "position should not have more than 3 elements",
+    "level": "message",
+    "line": 3
+  }
+]
