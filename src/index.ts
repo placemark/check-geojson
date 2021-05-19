@@ -5,26 +5,40 @@ import { GEOJSON_TYPES } from './types';
 import { getType } from './get_type';
 import { getCoordinates } from './get_coordinates';
 import { enforcePosition } from './enforce_position';
+import { enforcePositionArray } from './enforce_position_array';
 import { forbidConfusingProperties } from './forbid_confusing_properties';
 
-function checkLineString(issues: HintIssue[], node: ObjectNode) {}
-function checkMultiLineString(issues: HintIssue[], node: ObjectNode) {}
-
-function checkPolygon(issues: HintIssue[], node: ObjectNode) {}
-function checkMultiPolygon(issues: HintIssue[], node: ObjectNode) {}
-
-function checkPoint(issues: HintIssue[], node: ObjectNode) {
-  const coordinates = getCoordinates(issues, node);
+function checkLineString(issues: HintIssue[], node: ObjectNode) {
+  enforcePositionArray(issues, getCoordinates(issues, node), 'linestring');
   forbidConfusingProperties(issues, node);
-  if (coordinates) enforcePosition(issues, coordinates);
+}
+function checkMultiLineString(issues: HintIssue[], node: ObjectNode) {
+  forbidConfusingProperties(issues, node);
 }
 
-function checkMultiPoint(issues: HintIssue[], node: ObjectNode) {}
+function checkPolygon(issues: HintIssue[], node: ObjectNode) {
+  forbidConfusingProperties(issues, node);
+}
+function checkMultiPolygon(issues: HintIssue[], node: ObjectNode) {
+  forbidConfusingProperties(issues, node);
+}
+
+function checkPoint(issues: HintIssue[], node: ObjectNode) {
+  enforcePosition(issues, getCoordinates(issues, node));
+  forbidConfusingProperties(issues, node);
+}
+
+function checkMultiPoint(issues: HintIssue[], node: ObjectNode) {
+  enforcePositionArray(issues, getCoordinates(issues, node));
+  forbidConfusingProperties(issues, node);
+}
+
+function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
+  forbidConfusingProperties(issues, node);
+}
 
 function checkFeature(issues: HintIssue[], node: ObjectNode) {}
 function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {}
-
-function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {}
 
 const CHECKERS: Record<
   GeoJSON['type'],

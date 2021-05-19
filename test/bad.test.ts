@@ -16,6 +16,21 @@ describe('check', () => {
     ).toThrow(HintError);
   });
 
+  it('bad points', () => {
+    expect(() =>
+      check(JSON.stringify({ type: 'Point', coordinates: [1] }))
+    ).toThrow(HintError);
+    expect(() =>
+      check(JSON.stringify({ type: 'Point', coordinates: [1, 2, 3, 4] }))
+    ).toThrow(HintError);
+  });
+
+  it('bad multipoints', () => {
+    expect(() =>
+      check(JSON.stringify({ type: 'MultiPoint', coordinates: [[true]] }))
+    ).toThrow(HintError);
+  });
+
   it('forbidden properties', () => {
     expect(() =>
       check(
