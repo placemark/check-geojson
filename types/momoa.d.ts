@@ -1,4 +1,5 @@
 declare module '@humanwhocodes/momoa' {
+  import { JSONValue } from 'type-fest';
   interface AST {}
 
   type ParseOptions = {
@@ -83,4 +84,5 @@ declare module '@humanwhocodes/momoa' {
 
   export function parse(jsonStr: string, options?: ParseOptions): AST;
   export function iterator(ast: AST): Generator<IteratorState>;
+  export function evaluate(ast: AST): JSONValue;
 }

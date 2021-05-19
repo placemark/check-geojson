@@ -3,13 +3,10 @@ import { check } from '../src';
 
 describe('check', () => {
   it('works', () => {
-    expect(
-      check(
-        JSON.stringify({
-          type: 'Point',
-          coordinates: true,
-        })
-      )
-    ).toEqual([]);
+    const obj = {
+      type: 'Point',
+      coordinates: true,
+    };
+    expect(check(JSON.stringify(obj))).toEqual(obj);
   });
 });

@@ -1,6 +1,7 @@
-import { parse, iterator } from '@humanwhocodes/momoa';
+import { parse, iterator, evaluate } from '@humanwhocodes/momoa';
+import { GeoJSON } from 'geojson';
 
-export const check = (jsonStr: string) => {
+export const check = (jsonStr: string): GeoJSON => {
   const ast = parse(jsonStr, {
     ranges: true,
   });
@@ -11,5 +12,5 @@ export const check = (jsonStr: string) => {
     console.log(parent);
   }
 
-  return [];
+  return evaluate(ast);
 };
