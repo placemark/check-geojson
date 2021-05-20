@@ -1,5 +1,6 @@
 import { check } from '../src';
-// import { readFileSync, readdirSync } from 'fs';
+import * as Path from 'path';
+import { readFileSync, readdirSync } from 'fs';
 
 const examplePoint = {
   type: 'Point',
@@ -17,7 +18,7 @@ const exampleFeatureCollection = {
   features: [exampleFeature],
 };
 describe('check', () => {
-  it('works', () => {
+  it('works with fixed examples', () => {
     const examples = [
       examplePoint,
       exampleFeature,
@@ -111,6 +112,18 @@ describe('check', () => {
     for (let obj of examples) {
       check(JSON.stringify(obj));
       expect(check(JSON.stringify(obj))).toEqual(obj);
+    }
+  });
+  describe('works with fixtures', () => {
+    const fixtureNames = readdirSync(Path.join(__dirname, './fixture/good/'));
+    for (let name of fixtureNames) {
+      it(`fixture: ${name}`, () => {
+        const input = readFileSync(
+          Path.join(__dirname, './fixture/good/', name),
+          'utf8'
+        );
+        expect(check(input)).toEqual(JSON.parse(input));
+      });
     }
   });
 });

@@ -1,6 +1,0 @@
-[
-  {
-    "message": "\"id\" property should be string, but is an number instead",
-    "line": 1
-  }
-]

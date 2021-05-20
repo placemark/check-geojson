@@ -1,5 +1,6 @@
 import { check, HintError } from '../src';
-// import { readFileSync, readdirSync } from 'fs';
+import * as Path from 'path';
+import { readFileSync, readdirSync } from 'fs';
 
 describe('check', () => {
   it('invalid root object', () => {
@@ -37,5 +38,18 @@ describe('check', () => {
         JSON.stringify({ type: 'Point', coordinates: [1, 2], properties: {} })
       )
     ).toThrow(HintError);
+  });
+
+  describe('works with fixtures', () => {
+    const fixtureNames = readdirSync(Path.join(__dirname, './fixture/bad/'));
+    for (let name of fixtureNames) {
+      it(`fixture: ${name}`, () => {
+        const input = readFileSync(
+          Path.join(__dirname, './fixture/bad/', name),
+          'utf8'
+        );
+        expect(() => check(input)).toThrow(HintError);
+      });
+    }
   });
 });

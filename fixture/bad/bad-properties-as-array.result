@@ -1,6 +1,0 @@
-[
-  {
-    "message": "\"properties\" member should be object, but is an Array instead",
-    "line": 1
-  }
-]

@@ -58,11 +58,11 @@ function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
 }
 
 function checkFeature(issues: HintIssue[], node: ObjectNode) {
-  const geometry = getObject(
-    issues,
-    getMember(issues, node, 'geometry')?.value || null
-  );
-  if (geometry) checkObject(issues, geometry);
+  const geometryMember = getMember(issues, node, 'geometry')?.value || null;
+  if (geometryMember?.type !== 'Null') {
+    const geometry = getObject(issues, geometryMember);
+    if (geometry) checkObject(issues, geometry);
+  }
 
   const properties = getMember(issues, node, 'properties');
   if (!properties) {
