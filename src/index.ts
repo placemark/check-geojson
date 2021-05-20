@@ -5,6 +5,7 @@ import { GEOJSON_TYPES } from './types';
 import { getType } from './get_type';
 import { getMember } from './get_member';
 import { getArray } from './get_array';
+import { getObject } from './get_object';
 import { getCoordinates } from './get_coordinates';
 import { enforcePosition } from './enforce_position';
 import {
@@ -48,7 +49,7 @@ function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
   forbidConfusingProperties(issues, node);
   const geometriesMember = getArray(
     issues,
-    getMember(issues, node, 'geometries')
+    getMember(issues, node, 'geometries')?.value || null
   );
   if (!geometriesMember) return;
   for (let element of geometriesMember.elements) {
@@ -57,14 +58,44 @@ function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
 }
 
 function checkFeature(issues: HintIssue[], node: ObjectNode) {
-  const geometry = getMember(issues, node, 'geometry');
-  checkObject(issues, geometry);
+  const geometry = getObject(
+    issues,
+    getMember(issues, node, 'geometry')?.value || null
+  );
+  if (geometry) checkObject(issues, geometry);
+
+  const properties = getMember(issues, node, 'properties');
+  if (!properties) {
+    issues.push({
+      code: 'invalid_type',
+      message: `The Feature properties member is missing.`,
+      loc: node.loc,
+    });
+    return;
+  }
+
+  const {
+    value: { type },
+  } = properties;
+
+  if (!(type === 'Object' || type === 'Null')) {
+    issues.push({
+      code: 'invalid_type',
+      message: `The Feature properties member can be an object or null.`,
+      loc: node.loc,
+    });
+  }
 }
+
 function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {
-  const featuresMember = getArray(issues, getMember(issues, node, 'features'));
+  const featuresMember = getArray(
+    issues,
+    getMember(issues, node, 'features')?.value || null
+  );
   if (!featuresMember) return;
   for (let feature of featuresMember.elements) {
-    checkFeature(issues, feature);
+    const obj = getObject(issues, feature);
+    if (obj) checkFeature(issues, obj);
   }
 }
 

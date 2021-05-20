@@ -26,4 +26,12 @@ export class HintError extends Error {
     Object.setPrototypeOf(this, actualProto);
     this.issues = issues;
   }
+
+  get message() {
+    return JSON.stringify(this.issues, null, 2);
+  }
+
+  toString() {
+    return `HintError: ${JSON.stringify(this.issues, null, 2)}`;
+  }
 }
