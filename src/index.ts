@@ -23,42 +23,44 @@ import {
 import { enforceBbox } from './enforce_bbox';
 import { forbidConfusingProperties } from './forbid_confusing_properties';
 
-function checkGeometryShared(issues: HintIssue[], node: ObjectNode) {
+type Checker = (issues: HintIssue[], node: ObjectNode) => void;
+
+const checkGeometryShared: Checker = (issues, node) => {
   enforceBbox(issues, node);
   forbidConfusingProperties(issues, node, 'Geometry');
-}
+};
 
-function checkLineString(issues: HintIssue[], node: ObjectNode) {
+const checkLineString: Checker = (issues, node) => {
   enforcePositionArray(issues, getCoordinates(issues, node), 'LineString');
   checkGeometryShared(issues, node);
-}
+};
 
-function checkMultiLineString(issues: HintIssue[], node: ObjectNode) {
+const checkMultiLineString: Checker = (issues, node) => {
   enforcePositionArray2(issues, getCoordinates(issues, node), 'LineString');
   checkGeometryShared(issues, node);
-}
+};
 
-function checkPolygon(issues: HintIssue[], node: ObjectNode) {
+const checkPolygon: Checker = (issues, node) => {
   enforcePositionArray2(issues, getCoordinates(issues, node), 'Polygon');
   checkGeometryShared(issues, node);
-}
+};
 
-function checkMultiPolygon(issues: HintIssue[], node: ObjectNode) {
+const checkMultiPolygon: Checker = (issues, node) => {
   enforcePositionArray3(issues, getCoordinates(issues, node), 'Polygon');
   checkGeometryShared(issues, node);
-}
+};
 
-function checkPoint(issues: HintIssue[], node: ObjectNode) {
+const checkPoint: Checker = (issues, node) => {
   enforcePosition(issues, getCoordinates(issues, node));
   checkGeometryShared(issues, node);
-}
+};
 
-function checkMultiPoint(issues: HintIssue[], node: ObjectNode) {
+const checkMultiPoint: Checker = (issues, node) => {
   enforcePositionArray(issues, getCoordinates(issues, node));
   checkGeometryShared(issues, node);
-}
+};
 
-function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
+const checkGeometryCollection: Checker = (issues, node) => {
   checkGeometryShared(issues, node);
   const geometriesMember = getArray(
     issues,
@@ -68,9 +70,9 @@ function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
   for (let element of geometriesMember.elements) {
     checkObject(issues, element, GEOJSON_GEOMETRY_TYPES_EX_GEOMETRY_COLLECTION);
   }
-}
+};
 
-function checkFeature(issues: HintIssue[], node: ObjectNode) {
+const checkFeature: Checker = (issues, node) => {
   forbidConfusingProperties(issues, node, 'Feature');
   const geometryMember = getMemberValue(issues, node, 'geometry');
   enforceBbox(issues, node);
@@ -112,9 +114,9 @@ function checkFeature(issues: HintIssue[], node: ObjectNode) {
       loc: node.loc,
     });
   }
-}
+};
 
-function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {
+const checkFeatureCollection: Checker = (issues, node) => {
   forbidConfusingProperties(issues, node, 'FeatureCollection');
   const featuresMember = getArray(
     issues,
@@ -128,7 +130,7 @@ function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {
       checkFeature(issues, obj);
     }
   }
-}
+};
 
 const CHECKERS: Record<
   GeoJSON['type'],
