@@ -1,7 +1,11 @@
 import { HintIssue } from './errors';
 import { ObjectNode } from '@humanwhocodes/momoa';
 
-export function getMember(issues: HintIssue[], node: ObjectNode, name: string) {
+export function getMemberValue(
+  issues: HintIssue[],
+  node: ObjectNode,
+  name: string
+) {
   const member = node.members.find(member => {
     return member.name.value === name;
   });
@@ -16,5 +20,5 @@ export function getMember(issues: HintIssue[], node: ObjectNode, name: string) {
     return null;
   }
 
-  return member;
+  return member.value;
 }

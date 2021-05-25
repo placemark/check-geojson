@@ -9,7 +9,7 @@ import {
   GEOJSON_FEATURE_TYPE,
 } from './types';
 import { getType } from './get_type';
-import { getMember } from './get_member';
+import { getMemberValue } from './get_member_value';
 import { getArray } from './get_array';
 import { getObject } from './get_object';
 import { getCoordinates } from './get_coordinates';
@@ -64,7 +64,7 @@ function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
   enforceBbox(issues, node);
   const geometriesMember = getArray(
     issues,
-    getMember(issues, node, 'geometries')?.value || null
+    getMemberValue(issues, node, 'geometries')
   );
   if (!geometriesMember) return;
   for (let element of geometriesMember.elements) {
@@ -74,7 +74,7 @@ function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
 
 function checkFeature(issues: HintIssue[], node: ObjectNode) {
   forbidConfusingProperties(issues, node, 'Feature');
-  const geometryMember = getMember(issues, node, 'geometry')?.value || null;
+  const geometryMember = getMemberValue(issues, node, 'geometry');
   enforceBbox(issues, node);
   if (geometryMember?.type !== 'Null') {
     const geometry = getObject(issues, geometryMember);
@@ -95,7 +95,7 @@ function checkFeature(issues: HintIssue[], node: ObjectNode) {
     });
   }
 
-  const properties = getMember(issues, node, 'properties');
+  const properties = getMemberValue(issues, node, 'properties');
   if (!properties) {
     issues.push({
       code: 'invalid_type',
@@ -105,9 +105,7 @@ function checkFeature(issues: HintIssue[], node: ObjectNode) {
     return;
   }
 
-  const {
-    value: { type },
-  } = properties;
+  const { type } = properties;
 
   if (!(type === 'Object' || type === 'Null')) {
     issues.push({
@@ -122,7 +120,7 @@ function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {
   forbidConfusingProperties(issues, node, 'FeatureCollection');
   const featuresMember = getArray(
     issues,
-    getMember(issues, node, 'features')?.value || null
+    getMemberValue(issues, node, 'features')
   );
   if (!featuresMember) return;
   for (let feature of featuresMember.elements) {

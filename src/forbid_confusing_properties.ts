@@ -27,7 +27,7 @@ const FORBIDDEN_PROPERTIES = {
 export function forbidConfusingProperties(
   issues: HintIssue[],
   node: ObjectNode,
-  propertiesFrom: PropertiesFrom = 'Feature'
+  propertiesFrom: PropertiesFrom
 ) {
   for (let member of node.members) {
     for (let property of FORBIDDEN_PROPERTIES[propertiesFrom]) {
