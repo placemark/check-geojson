@@ -14,6 +14,7 @@ import { getArray } from './get_array';
 import { getObject } from './get_object';
 import { getCoordinates } from './get_coordinates';
 import { enforcePosition } from './enforce_position';
+import { checkDuplicateKeys } from './check_duplicate_keys';
 import {
   enforcePositionArray,
   enforcePositionArray2,
@@ -98,7 +99,7 @@ function checkFeature(issues: HintIssue[], node: ObjectNode) {
   if (!properties) {
     issues.push({
       code: 'invalid_type',
-      message: `The Feature properties member is missing.`,
+      message: `The properties member is missing.`,
       loc: node.loc,
     });
     return;
@@ -159,6 +160,7 @@ function checkObject(
 ) {
   const { type, objectNode } = getType(issues, node, typeSet);
   if (!(type && objectNode)) return;
+  checkDuplicateKeys(issues, objectNode);
   CHECKERS[type](issues, objectNode);
 }
 
