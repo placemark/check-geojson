@@ -81,39 +81,15 @@ const checkFeature: Checker = (issues, node) => {
     if (geometry) checkObject(issues, geometry, GEOJSON_GEOMETRY_TYPES);
   }
 
-  const idMember = node.members.find(member => {
-    return member.name.value === 'id';
+  getMemberValue(issues, node, 'id', {
+    optional: true,
+    allowedTypes: new Set(['String', 'Number']),
   });
-  if (
-    idMember &&
-    !(idMember.value.type === 'String' || idMember.value.type === 'Number')
-  ) {
-    issues.push({
-      code: 'invalid_type',
-      message: `The Feature id must be a string or number.`,
-      loc: idMember.loc,
-    });
-  }
 
-  const properties = getMemberValue(issues, node, 'properties');
-  if (!properties) {
-    issues.push({
-      code: 'invalid_type',
-      message: `The properties member is missing.`,
-      loc: node.loc,
-    });
-    return;
-  }
-
-  const { type } = properties;
-
-  if (!(type === 'Object' || type === 'Null')) {
-    issues.push({
-      code: 'invalid_type',
-      message: `The Feature properties member can be an object or null.`,
-      loc: node.loc,
-    });
-  }
+  getMemberValue(issues, node, 'properties', {
+    optional: false,
+    allowedTypes: new Set(['Object', 'Null']),
+  });
 };
 
 const checkFeatureCollection: Checker = (issues, node) => {
