@@ -30,8 +30,4 @@ export class HintError extends Error {
   get message() {
     return JSON.stringify(this.issues, null, 2);
   }
-
-  toString() {
-    return `HintError: ${JSON.stringify(this.issues, null, 2)}`;
-  }
 }

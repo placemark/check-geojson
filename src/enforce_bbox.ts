@@ -1,5 +1,5 @@
 import { HintIssue } from './errors';
-import type { ObjectNode } from '@humanwhocodes/momoa';
+import { ObjectNode } from '@humanwhocodes/momoa';
 import { getArray } from './get_array';
 
 export function enforceBbox(issues: HintIssue[], node: ObjectNode) {
