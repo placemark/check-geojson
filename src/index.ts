@@ -1,7 +1,7 @@
 import { parse, evaluate, Node, ObjectNode } from '@humanwhocodes/momoa';
 import { GeoJSON } from 'geojson';
 import { HintIssue, HintError } from './errors';
-import { GEOJSON_TYPES } from './types';
+import { GEOJSON_TYPES, GEOJSON_FEATURE_TYPE } from './types';
 import { getType } from './get_type';
 import { getMember } from './get_member';
 import { getArray } from './get_array';
@@ -118,7 +118,10 @@ function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {
   if (!featuresMember) return;
   for (let feature of featuresMember.elements) {
     const obj = getObject(issues, feature);
-    if (obj) checkFeature(issues, obj);
+    if (obj) {
+      getType(issues, obj, GEOJSON_FEATURE_TYPE);
+      checkFeature(issues, obj);
+    }
   }
 }
 

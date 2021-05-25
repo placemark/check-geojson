@@ -2,6 +2,8 @@ import { GeoJSON } from 'geojson';
 
 export type GeoJSONTypeSet = Set<GeoJSON['type']>;
 
+export const GEOJSON_FEATURE_TYPE = new Set<GeoJSON['type']>(['Feature']);
+
 export const GEOJSON_GEOMETRY_TYPES = new Set<GeoJSON['type']>([
   'Point',
   'MultiPoint',
