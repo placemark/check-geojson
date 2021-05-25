@@ -28,3 +28,5 @@ that geojsonhint would warn about, like:
 
 This does not check for. Additionally, the `crs` member is ignored by this tool: as of
 the latest GeoJSON specification, this is [not used](https://datatracker.ietf.org/doc/html/rfc7946#appendix-B.1).
+
+We're using the same test fixtures as geojsonhint as a starter.
