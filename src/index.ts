@@ -132,10 +132,7 @@ const checkFeatureCollection: Checker = (issues, node) => {
   }
 };
 
-const CHECKERS: Record<
-  GeoJSON['type'],
-  (arg0: HintIssue[], arg1: ObjectNode) => void
-> = {
+const CHECKERS: Record<GeoJSON['type'], Checker> = {
   LineString: checkLineString,
   MultiLineString: checkMultiLineString,
 
