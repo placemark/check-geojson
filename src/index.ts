@@ -23,45 +23,43 @@ import {
 import { enforceBbox } from './enforce_bbox';
 import { forbidConfusingProperties } from './forbid_confusing_properties';
 
-function checkLineString(issues: HintIssue[], node: ObjectNode) {
-  enforcePositionArray(issues, getCoordinates(issues, node), 'LineString');
+function checkGeometryShared(issues: HintIssue[], node: ObjectNode) {
   enforceBbox(issues, node);
   forbidConfusingProperties(issues, node, 'Geometry');
+}
+
+function checkLineString(issues: HintIssue[], node: ObjectNode) {
+  enforcePositionArray(issues, getCoordinates(issues, node), 'LineString');
+  checkGeometryShared(issues, node);
 }
 
 function checkMultiLineString(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray2(issues, getCoordinates(issues, node), 'LineString');
-  enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node, 'Geometry');
+  checkGeometryShared(issues, node);
 }
 
 function checkPolygon(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray2(issues, getCoordinates(issues, node), 'Polygon');
-  enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node, 'Geometry');
+  checkGeometryShared(issues, node);
 }
 
 function checkMultiPolygon(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray3(issues, getCoordinates(issues, node), 'Polygon');
-  enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node, 'Geometry');
+  checkGeometryShared(issues, node);
 }
 
 function checkPoint(issues: HintIssue[], node: ObjectNode) {
   enforcePosition(issues, getCoordinates(issues, node));
-  enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node, 'Geometry');
+  checkGeometryShared(issues, node);
 }
 
 function checkMultiPoint(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray(issues, getCoordinates(issues, node));
-  enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node, 'Geometry');
+  checkGeometryShared(issues, node);
 }
 
 function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
-  forbidConfusingProperties(issues, node, 'Geometry');
-  enforceBbox(issues, node);
+  checkGeometryShared(issues, node);
   const geometriesMember = getArray(
     issues,
     getMemberValue(issues, node, 'geometries')

@@ -15,10 +15,12 @@ function getArray(issues: HintIssue[], node: Node): ArrayNode | null {
   return node;
 }
 
+type PositionKind = 'Polygon' | 'LineString';
+
 export function enforcePositionArray(
   issues: HintIssue[],
   node: Node | null,
-  kind?: 'Polygon' | 'LineString'
+  kind?: PositionKind
 ) {
   // This error has already been caught. Allow a no-op for simplicity.
   if (node === null) return;
@@ -66,7 +68,7 @@ export function enforcePositionArray(
 export function enforcePositionArray2(
   issues: HintIssue[],
   node: Node | null,
-  kind?: 'Polygon' | 'LineString'
+  kind?: PositionKind
 ) {
   // This error has already been caught. Allow a no-op for simplicity.
   if (node === null) return;
@@ -82,7 +84,7 @@ export function enforcePositionArray2(
 export function enforcePositionArray3(
   issues: HintIssue[],
   node: ArrayNode | null,
-  kind?: 'Polygon' | 'LineString'
+  kind?: PositionKind
 ) {
   // This error has already been caught. Allow a no-op for simplicity.
   if (node === null) return;
