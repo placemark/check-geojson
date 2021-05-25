@@ -1,5 +1,6 @@
 import { HintIssue } from './errors';
 import { enforcePosition } from './enforce_position';
+import { enforceSamePosition } from './enforce_same_position';
 import { Node, ArrayNode } from '@humanwhocodes/momoa';
 
 function getArray(issues: HintIssue[], node: Node): ArrayNode | null {
@@ -17,7 +18,7 @@ function getArray(issues: HintIssue[], node: Node): ArrayNode | null {
 export function enforcePositionArray(
   issues: HintIssue[],
   node: Node | null,
-  kind?: 'polygon' | 'linestring'
+  kind?: 'Polygon' | 'LineString'
 ) {
   // This error has already been caught. Allow a no-op for simplicity.
   if (node === null) return;
@@ -39,7 +40,7 @@ export function enforcePositionArray(
   }
 
   switch (kind) {
-    case 'linestring': {
+    case 'LineString': {
       if (node.elements.length < 2) {
         issues.push({
           code: 'invalid_type',
@@ -49,7 +50,7 @@ export function enforcePositionArray(
       }
       break;
     }
-    case 'polygon':
+    case 'Polygon':
       if (node.elements.length < 4) {
         issues.push({
           code: 'invalid_type',
@@ -57,6 +58,7 @@ export function enforcePositionArray(
           loc: node.loc,
         });
       }
+      enforceSamePosition(issues, node);
       break;
   }
 }
@@ -64,7 +66,7 @@ export function enforcePositionArray(
 export function enforcePositionArray2(
   issues: HintIssue[],
   node: Node | null,
-  kind?: 'polygon' | 'linestring'
+  kind?: 'Polygon' | 'LineString'
 ) {
   // This error has already been caught. Allow a no-op for simplicity.
   if (node === null) return;
@@ -80,7 +82,7 @@ export function enforcePositionArray2(
 export function enforcePositionArray3(
   issues: HintIssue[],
   node: ArrayNode | null,
-  kind?: 'polygon' | 'linestring'
+  kind?: 'Polygon' | 'LineString'
 ) {
   // This error has already been caught. Allow a no-op for simplicity.
   if (node === null) return;

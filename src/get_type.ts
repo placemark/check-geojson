@@ -47,7 +47,7 @@ export function getType(
   if (!allowedTypes.has(value.value as any)) {
     issues.push({
       code: 'invalid_type',
-      message: 'This type member is not a valid GeoJSON type.',
+      message: 'This type of GeoJSON object is not allowed here.',
       loc: value.loc,
     });
 

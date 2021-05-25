@@ -1,23 +1,37 @@
 import { HintIssue } from './errors';
 import { ObjectNode, MemberNode } from '@humanwhocodes/momoa';
 
-function forbidProperty(issues: HintIssue[], member: MemberNode, name: string) {
+type PropertiesFrom = 'Feature' | 'FeatureCollection' | 'Geometry';
+
+function forbidProperty(
+  issues: HintIssue[],
+  member: MemberNode,
+  propertiesFrom: PropertiesFrom,
+  name: string
+) {
   if (member.name.value === name) {
     issues.push({
       code: 'invalid_type',
-      message: 'Geometry objects cannot contain a `',
+      message: `${propertiesFrom} objects cannot contain a member named ${member.name.value}`,
       loc: member.name.loc,
     });
   }
 }
 
+const FORBIDDEN_PROPERTIES = {
+  Geometry: ['properties', 'geometry', 'features'],
+  Feature: ['features'],
+  FeatureCollection: ['properties', 'coordinates'],
+};
+
 export function forbidConfusingProperties(
   issues: HintIssue[],
-  node: ObjectNode
+  node: ObjectNode,
+  propertiesFrom: PropertiesFrom = 'Feature'
 ) {
   for (let member of node.members) {
-    for (let property of ['properties', 'geometry', 'features']) {
-      forbidProperty(issues, member, property);
+    for (let property of FORBIDDEN_PROPERTIES[propertiesFrom]) {
+      forbidProperty(issues, member, propertiesFrom, property);
     }
   }
 }

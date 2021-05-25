@@ -14,6 +14,17 @@ export const GEOJSON_GEOMETRY_TYPES = new Set<GeoJSON['type']>([
   'GeometryCollection',
 ]);
 
+export const GEOJSON_GEOMETRY_TYPES_EX_GEOMETRY_COLLECTION = new Set<
+  GeoJSON['type']
+>([
+  'Point',
+  'MultiPoint',
+  'Polygon',
+  'MultiPolygon',
+  'LineString',
+  'MultiLineString',
+]);
+
 export const GEOJSON_TYPES = new Set<GeoJSON['type']>([
   ...GEOJSON_GEOMETRY_TYPES,
   'Feature',

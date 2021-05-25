@@ -1,7 +1,13 @@
 import { parse, evaluate, Node, ObjectNode } from '@humanwhocodes/momoa';
 import { GeoJSON } from 'geojson';
 import { HintIssue, HintError } from './errors';
-import { GEOJSON_TYPES, GEOJSON_FEATURE_TYPE } from './types';
+import {
+  GeoJSONTypeSet,
+  GEOJSON_TYPES,
+  GEOJSON_GEOMETRY_TYPES,
+  GEOJSON_GEOMETRY_TYPES_EX_GEOMETRY_COLLECTION,
+  GEOJSON_FEATURE_TYPE,
+} from './types';
 import { getType } from './get_type';
 import { getMember } from './get_member';
 import { getArray } from './get_array';
@@ -17,43 +23,43 @@ import { enforceBbox } from './enforce_bbox';
 import { forbidConfusingProperties } from './forbid_confusing_properties';
 
 function checkLineString(issues: HintIssue[], node: ObjectNode) {
-  enforcePositionArray(issues, getCoordinates(issues, node), 'linestring');
+  enforcePositionArray(issues, getCoordinates(issues, node), 'LineString');
   enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node);
+  forbidConfusingProperties(issues, node, 'Geometry');
 }
 
 function checkMultiLineString(issues: HintIssue[], node: ObjectNode) {
-  enforcePositionArray2(issues, getCoordinates(issues, node), 'linestring');
+  enforcePositionArray2(issues, getCoordinates(issues, node), 'LineString');
   enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node);
+  forbidConfusingProperties(issues, node, 'Geometry');
 }
 
 function checkPolygon(issues: HintIssue[], node: ObjectNode) {
-  enforcePositionArray2(issues, getCoordinates(issues, node), 'polygon');
+  enforcePositionArray2(issues, getCoordinates(issues, node), 'Polygon');
   enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node);
+  forbidConfusingProperties(issues, node, 'Geometry');
 }
 
 function checkMultiPolygon(issues: HintIssue[], node: ObjectNode) {
-  enforcePositionArray3(issues, getCoordinates(issues, node), 'polygon');
+  enforcePositionArray3(issues, getCoordinates(issues, node), 'Polygon');
   enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node);
+  forbidConfusingProperties(issues, node, 'Geometry');
 }
 
 function checkPoint(issues: HintIssue[], node: ObjectNode) {
   enforcePosition(issues, getCoordinates(issues, node));
   enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node);
+  forbidConfusingProperties(issues, node, 'Geometry');
 }
 
 function checkMultiPoint(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray(issues, getCoordinates(issues, node));
   enforceBbox(issues, node);
-  forbidConfusingProperties(issues, node);
+  forbidConfusingProperties(issues, node, 'Geometry');
 }
 
 function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
-  forbidConfusingProperties(issues, node);
+  forbidConfusingProperties(issues, node, 'Geometry');
   enforceBbox(issues, node);
   const geometriesMember = getArray(
     issues,
@@ -61,16 +67,17 @@ function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
   );
   if (!geometriesMember) return;
   for (let element of geometriesMember.elements) {
-    checkObject(issues, element);
+    checkObject(issues, element, GEOJSON_GEOMETRY_TYPES_EX_GEOMETRY_COLLECTION);
   }
 }
 
 function checkFeature(issues: HintIssue[], node: ObjectNode) {
+  forbidConfusingProperties(issues, node, 'Feature');
   const geometryMember = getMember(issues, node, 'geometry')?.value || null;
   enforceBbox(issues, node);
   if (geometryMember?.type !== 'Null') {
     const geometry = getObject(issues, geometryMember);
-    if (geometry) checkObject(issues, geometry);
+    if (geometry) checkObject(issues, geometry, GEOJSON_GEOMETRY_TYPES);
   }
 
   const idMember = node.members.find(member => {
@@ -111,6 +118,7 @@ function checkFeature(issues: HintIssue[], node: ObjectNode) {
 }
 
 function checkFeatureCollection(issues: HintIssue[], node: ObjectNode) {
+  forbidConfusingProperties(issues, node, 'FeatureCollection');
   const featuresMember = getArray(
     issues,
     getMember(issues, node, 'features')?.value || null
@@ -144,19 +152,42 @@ const CHECKERS: Record<
   FeatureCollection: checkFeatureCollection,
 };
 
-function checkObject(issues: HintIssue[], node: Node) {
-  const { type, objectNode } = getType(issues, node, GEOJSON_TYPES);
+function checkObject(
+  issues: HintIssue[],
+  node: Node,
+  typeSet: GeoJSONTypeSet = GEOJSON_TYPES
+) {
+  const { type, objectNode } = getType(issues, node, typeSet);
   if (!(type && objectNode)) return;
   CHECKERS[type](issues, objectNode);
 }
 
 export const check = (jsonStr: string): GeoJSON => {
-  const ast = parse(jsonStr, {
-    ranges: true,
-  });
   const issues: HintIssue[] = [];
-  checkObject(issues, ast.body);
-  if (issues.length) throw new HintError(issues);
+  let ast;
+  try {
+    ast = parse(jsonStr, {
+      ranges: true,
+    });
+  } catch (e) {
+    issues.push({
+      code: 'invalid_type',
+      loc: {
+        start: {
+          line: e.line,
+          column: e.column,
+          offset: 0,
+        },
+        end: {
+          line: e.line,
+          column: e.column,
+          offset: 0,
+        },
+      },
+    });
+  }
+  if (ast) checkObject(issues, ast.body);
+  if (issues.length || !ast) throw new HintError(issues);
   return evaluate(ast);
 };
 
