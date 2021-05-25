@@ -13,40 +13,48 @@ import {
   enforcePositionArray2,
   enforcePositionArray3,
 } from './enforce_position_array';
+import { enforceBbox } from './enforce_bbox';
 import { forbidConfusingProperties } from './forbid_confusing_properties';
 
 function checkLineString(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray(issues, getCoordinates(issues, node), 'linestring');
+  enforceBbox(issues, node);
   forbidConfusingProperties(issues, node);
 }
 
 function checkMultiLineString(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray2(issues, getCoordinates(issues, node), 'linestring');
+  enforceBbox(issues, node);
   forbidConfusingProperties(issues, node);
 }
 
 function checkPolygon(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray2(issues, getCoordinates(issues, node), 'polygon');
+  enforceBbox(issues, node);
   forbidConfusingProperties(issues, node);
 }
 
 function checkMultiPolygon(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray3(issues, getCoordinates(issues, node), 'polygon');
+  enforceBbox(issues, node);
   forbidConfusingProperties(issues, node);
 }
 
 function checkPoint(issues: HintIssue[], node: ObjectNode) {
   enforcePosition(issues, getCoordinates(issues, node));
+  enforceBbox(issues, node);
   forbidConfusingProperties(issues, node);
 }
 
 function checkMultiPoint(issues: HintIssue[], node: ObjectNode) {
   enforcePositionArray(issues, getCoordinates(issues, node));
+  enforceBbox(issues, node);
   forbidConfusingProperties(issues, node);
 }
 
 function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
   forbidConfusingProperties(issues, node);
+  enforceBbox(issues, node);
   const geometriesMember = getArray(
     issues,
     getMember(issues, node, 'geometries')?.value || null
@@ -59,9 +67,24 @@ function checkGeometryCollection(issues: HintIssue[], node: ObjectNode) {
 
 function checkFeature(issues: HintIssue[], node: ObjectNode) {
   const geometryMember = getMember(issues, node, 'geometry')?.value || null;
+  enforceBbox(issues, node);
   if (geometryMember?.type !== 'Null') {
     const geometry = getObject(issues, geometryMember);
     if (geometry) checkObject(issues, geometry);
+  }
+
+  const idMember = node.members.find(member => {
+    return member.name.value === 'id';
+  });
+  if (
+    idMember &&
+    !(idMember.value.type === 'String' || idMember.value.type === 'Number')
+  ) {
+    issues.push({
+      code: 'invalid_type',
+      message: `The Feature id must be a string or number.`,
+      loc: idMember.loc,
+    });
   }
 
   const properties = getMember(issues, node, 'properties');
