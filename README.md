@@ -30,3 +30,17 @@ This does not check for. Additionally, the `crs` member is ignored by this tool:
 the latest GeoJSON specification, this is [not used](https://datatracker.ietf.org/doc/html/rfc7946#appendix-B.1).
 
 We're using the same test fixtures as geojsonhint as a starter.
+
+### Usage
+
+_Not finalized yet_
+
+```ts
+import { check } from "check-geojson"
+
+try {
+  const parseValue = check('… geojson string …')
+} catch (e) {
+  /// e.issues
+}
+```

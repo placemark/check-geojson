@@ -5,7 +5,7 @@ export function enforceSamePosition(issues: HintIssue[], node: ArrayNode) {
   const first = node.elements[0] as ArrayNode;
   const last = node.elements[node.elements.length - 1] as ArrayNode;
 
-  if (first.elements.length != last.elements.length) {
+  if (first.elements.length !== last.elements.length) {
     issues.push({
       code: 'invalid_type',
       message:
