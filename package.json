@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -56,8 +56,8 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@types/geojson": "^7946.0.7",
     "@humanwhocodes/momoa": "^2.0.1",
+    "@types/geojson": "^7946.0.7",
     "type-fest": "^1.1.3"
   }
 }
