@@ -31,7 +31,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "check-geojson",
+  "name": "@placemarkio/check-geojson",
   "author": "Tom MacWright",
   "module": "dist/check-geojson.esm.js",
   "size-limit": [
@@ -46,7 +46,6 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.10.2",
-    "@types/geojson": "^7946.0.7",
     "husky": "^6.0.0",
     "size-limit": "^4.10.2",
     "tsdx": "^0.14.1",
@@ -54,6 +53,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "@types/geojson": "^7946.0.7",
     "@humanwhocodes/momoa": "^2.0.1",
     "type-fest": "^1.1.3"
   }
