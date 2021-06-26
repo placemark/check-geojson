@@ -1,13 +1,10 @@
 import { LocRange } from '@humanwhocodes/momoa';
 
-type HintIssueBase = {
+interface HintIssueType {
+  code: 'invalid_type';
   loc: LocRange;
   // code: ZodIssueCode;
   message?: string;
-};
-
-interface HintIssueType extends HintIssueBase {
-  code: 'invalid_type';
 }
 
 interface HintJSONIssue {
