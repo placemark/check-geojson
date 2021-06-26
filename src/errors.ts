@@ -6,10 +6,6 @@ type HintIssueBase = {
   message?: string;
 };
 
-interface HintIssueRootType extends HintIssueBase {
-  code: 'invalid_root';
-}
-
 interface HintIssueType extends HintIssueBase {
   code: 'invalid_type';
 }
@@ -19,7 +15,7 @@ interface HintJSONIssue {
   line: number;
 }
 
-export type HintIssue = HintIssueRootType | HintIssueType | HintJSONIssue;
+export type HintIssue = HintIssueType | HintJSONIssue;
 
 export class HintError extends Error {
   issues: HintIssue[] = [];
