@@ -14,7 +14,12 @@ interface HintIssueType extends HintIssueBase {
   code: 'invalid_type';
 }
 
-export type HintIssue = HintIssueRootType | HintIssueType;
+interface HintJSONIssue {
+  code: 'invalid_json';
+  line: number;
+}
+
+export type HintIssue = HintIssueRootType | HintIssueType | HintJSONIssue;
 
 export class HintError extends Error {
   issues: HintIssue[] = [];

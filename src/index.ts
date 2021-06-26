@@ -168,19 +168,8 @@ export const check = (jsonStr: string): GeoJSON => {
     });
   } catch (e) {
     issues.push({
-      code: 'invalid_type',
-      loc: {
-        start: {
-          line: e.line,
-          column: e.column,
-          offset: 0,
-        },
-        end: {
-          line: e.line,
-          column: e.column,
-          offset: 0,
-        },
-      },
+      code: 'invalid_json',
+      line: e.line,
     });
   }
   if (ast) checkObject(issues, ast.body);
