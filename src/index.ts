@@ -177,4 +177,4 @@ export const check = (jsonStr: string): GeoJSON => {
   return evaluate(ast);
 };
 
-export { HintError };
+export { HintError, HintIssue };
