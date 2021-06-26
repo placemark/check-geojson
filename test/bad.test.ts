@@ -40,6 +40,22 @@ describe('check', () => {
     ).toThrow(HintError);
   });
 
+  it('bad json', () => {
+    try {
+      check(
+        `{
+    "type": "MultiPoint"
+    "coordinates": [["foo", "bar"]]
+}`
+      );
+    } catch (e) {
+      expect(e.issues[0]).toEqual({
+        code: 'invalid_json',
+        line: 3,
+      });
+    }
+  });
+
   describe('works with fixtures', () => {
     const fixtureNames = readdirSync(Path.join(__dirname, './fixture/bad/'));
     for (let name of fixtureNames) {
