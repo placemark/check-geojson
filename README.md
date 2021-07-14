@@ -1,5 +1,7 @@
 # check-geojson
 
+_check-geojson development is supported by 🌎 [placemark.io](https://placemark.io/)_
+
 geojsonhint for 2021.
 
 I started working on geojsonhint in 2014. It's a pretty useful project.
