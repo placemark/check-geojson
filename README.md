@@ -46,3 +46,7 @@ try {
   /// e.issues
 }
 ```
+
+---
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/0a1d1c0755b9e67406f1/maintainability)](https://codeclimate.com/repos/60a64f6aa449b13bc40002bd/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/0a1d1c0755b9e67406f1/test_coverage)](https://codeclimate.com/repos/60a64f6aa449b13bc40002bd/test_coverage)
