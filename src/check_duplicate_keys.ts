@@ -1,23 +1,21 @@
-import { HintIssue } from './errors';
+import { HintIssue, makeIssue } from './errors';
 import { ObjectNode } from '@humanwhocodes/momoa';
 
 export function checkDuplicateKeys(
   issues: HintIssue[],
-  node: ObjectNode
+  parent: ObjectNode
 ): ObjectNode {
   let keys = new Set<string>();
-  for (let {
-    name: { value },
-    loc,
-  } of node.members) {
+  for (let node of parent.members) {
+    const {
+      name: { value },
+    } = node;
     if (keys.has(value)) {
-      issues.push({
-        code: 'invalid_type',
-        message: 'Duplicate properties are ambiguous in GeoJSON',
-        loc: loc,
-      });
+      issues.push(
+        makeIssue('Duplicate properties are ambiguous in GeoJSON', node)
+      );
     }
     keys.add(value);
   }
-  return node;
+  return parent;
 }

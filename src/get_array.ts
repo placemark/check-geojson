@@ -1,4 +1,4 @@
-import { HintIssue } from './errors';
+import { HintIssue, makeIssue } from './errors';
 import { Node, ArrayNode } from '@humanwhocodes/momoa';
 
 export function getArray(
@@ -7,11 +7,7 @@ export function getArray(
 ): ArrayNode | null {
   if (node?.type === 'Array') return node;
   if (node) {
-    issues.push({
-      code: 'invalid_type',
-      message: 'This must be an array.',
-      loc: node.loc,
-    });
+    issues.push(makeIssue('This must be an array.', node));
   }
   return null;
 }

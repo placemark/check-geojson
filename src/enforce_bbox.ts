@@ -1,6 +1,7 @@
-import { HintIssue } from './errors';
+import { HintIssue, makeIssue } from './errors';
 import { ObjectNode } from '@humanwhocodes/momoa';
 import { getArray } from './get_array';
+import { arrayIsNumbers } from './array_is_numbers';
 
 export function enforceBbox(issues: HintIssue[], node: ObjectNode) {
   const member = node.members.find(member => {
@@ -15,21 +16,8 @@ export function enforceBbox(issues: HintIssue[], node: ObjectNode) {
   if (!array) return;
 
   if (!(array.elements.length === 4 || array.elements.length === 6)) {
-    issues.push({
-      code: 'invalid_type',
-      message: 'A bbox must have 4 or 6 positions',
-      loc: array.loc,
-    });
+    issues.push(makeIssue('A bbox must have 4 or 6 positions', array));
   }
 
-  for (let element of array.elements) {
-    if (element.type !== 'Number') {
-      issues.push({
-        code: 'invalid_type',
-        message: 'Each element in a bbox must be a number.',
-        loc: element.loc,
-      });
-      return;
-    }
-  }
+  arrayIsNumbers(issues, array.elements, 'bbox');
 }

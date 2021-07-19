@@ -1,6 +1,6 @@
 import { GeoJSONTypeSet } from './types';
 import { GeoJSON } from 'geojson';
-import { HintIssue, HintError } from './errors';
+import { makeIssue, HintIssue, HintError, makeIssue } from './errors';
 import { Node } from '@humanwhocodes/momoa';
 
 export function getType(
@@ -10,11 +10,7 @@ export function getType(
 ) {
   if (node.type !== 'Object') {
     throw new HintError([
-      {
-        code: 'invalid_type',
-        message: 'Expected an object, but found an incorrect type.',
-        loc: node.loc,
-      },
+      makeIssue('Expected an object, but found an incorrect type.', node),
     ]);
   }
 
@@ -24,32 +20,22 @@ export function getType(
 
   if (!typeMember) {
     throw new HintError([
-      {
-        code: 'invalid_type',
-        message: 'This GeoJSON object is missing its type member.',
-        loc: node.loc,
-      },
+      makeIssue('This GeoJSON object is missing its type member.', node),
     ]);
   }
 
   const value = typeMember.value;
 
   if (value.type !== 'String') {
-    issues.push({
-      code: 'invalid_type',
-      message: 'The type member should have been a string.',
-      loc: value.loc,
-    });
+    issues.push(makeIssue('The type member should have been a string.', node));
 
     return {};
   }
 
   if (!allowedTypes.has(value.value as any)) {
-    issues.push({
-      code: 'invalid_type',
-      message: 'This type of GeoJSON object is not allowed here.',
-      loc: value.loc,
-    });
+    issues.push(
+      makeIssue('This type of GeoJSON object is not allowed here.', node)
+    );
 
     return {};
   }

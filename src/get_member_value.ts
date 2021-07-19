@@ -1,4 +1,4 @@
-import { HintIssue } from './errors';
+import { HintIssue, makeIssue } from './errors';
 import { ObjectNode } from '@humanwhocodes/momoa';
 
 export function getMemberValue(
@@ -11,11 +11,12 @@ export function getMemberValue(
   });
 
   if (!member) {
-    issues.push({
-      code: 'invalid_type',
-      message: `This GeoJSON object requires a ${name} member but it is missing.`,
-      loc: node.loc,
-    });
+    issues.push(
+      makeIssue(
+        `This GeoJSON object requires a ${name} member but it is missing.`,
+        node
+      )
+    );
 
     return null;
   }
