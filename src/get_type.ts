@@ -1,6 +1,6 @@
 import { GeoJSONTypeSet } from './types';
 import { GeoJSON } from 'geojson';
-import { makeIssue, HintIssue, HintError, makeIssue } from './errors';
+import { HintIssue, HintError, makeIssue } from './errors';
 import { Node } from '@humanwhocodes/momoa';
 
 export function getType(
