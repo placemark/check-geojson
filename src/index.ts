@@ -1,4 +1,10 @@
-import { parse, evaluate, Node, ObjectNode } from '@humanwhocodes/momoa';
+import {
+  parse,
+  evaluate,
+  DocumentNode,
+  Node,
+  ObjectNode,
+} from '@humanwhocodes/momoa';
 import { GeoJSON } from 'geojson';
 import { HintIssue, HintError, makeIssue } from './errors';
 import {
@@ -149,13 +155,19 @@ function checkObject(
   CHECKERS[type](issues, objectNode);
 }
 
-export const check = (jsonStr: string): GeoJSON => {
+function checkInternal(
+  jsonStr: string
+): {
+  ast: DocumentNode | undefined;
+  issues: HintIssue[];
+} {
   const issues: HintIssue[] = [];
   let ast;
   try {
     ast = parse(jsonStr, {
       ranges: true,
     });
+    checkObject(issues, ast.body);
   } catch (e) {
     issues.push({
       message: `Invalid JSON: ${e.message}`,
@@ -164,7 +176,16 @@ export const check = (jsonStr: string): GeoJSON => {
       severity: 'error',
     });
   }
-  if (ast) checkObject(issues, ast.body);
+
+  return { ast, issues };
+}
+
+export const getIssues = (jsonStr: string): HintIssue[] => {
+  return checkInternal(jsonStr).issues;
+};
+
+export const check = (jsonStr: string): GeoJSON => {
+  const { issues, ast } = checkInternal(jsonStr);
   if (issues.length || !ast) throw new HintError(issues);
   return evaluate(ast);
 };
