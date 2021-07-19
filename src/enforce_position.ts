@@ -1,5 +1,6 @@
 import { HintIssue, makeIssue } from './errors';
 import { ArrayNode } from '@humanwhocodes/momoa';
+import { arrayIsNumbers } from './array_is_numbers';
 
 export function enforcePosition(issues: HintIssue[], node: ArrayNode | null) {
   // This error has already been caught. Allow a no-op for simplicity.
@@ -14,12 +15,5 @@ export function enforcePosition(issues: HintIssue[], node: ArrayNode | null) {
     );
   }
 
-  for (let element of node.elements) {
-    if (element.type !== 'Number') {
-      issues.push(
-        makeIssue('Each element in a position must be a number.', element)
-      );
-      return;
-    }
-  }
+  arrayIsNumbers(issues, node.elements, 'position');
 }
