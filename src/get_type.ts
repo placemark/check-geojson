@@ -1,6 +1,6 @@
 import { GeoJSONTypeSet } from './types';
 import { GeoJSON } from 'geojson';
-import { HintIssue, HintError, makeIssue } from './errors';
+import { makeIssue, HintIssue, HintError, makeIssue } from './errors';
 import { Node } from '@humanwhocodes/momoa';
 
 export function getType(
@@ -10,12 +10,7 @@ export function getType(
 ) {
   if (node.type !== 'Object') {
     throw new HintError([
-      {
-        message: 'Expected an object, but found an incorrect type.',
-        severity: 'error',
-        from: node.loc.start.offset,
-        to: node.loc.end.offset,
-      },
+      makeIssue('Expected an object, but found an incorrect type.', node),
     ]);
   }
 
