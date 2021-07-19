@@ -1,4 +1,4 @@
-import { HintIssue } from './errors';
+import { HintIssue, makeIssue } from './errors';
 import { ArrayNode, NumberNode } from '@humanwhocodes/momoa';
 
 export function enforceSamePosition(issues: HintIssue[], node: ArrayNode) {
@@ -6,12 +6,12 @@ export function enforceSamePosition(issues: HintIssue[], node: ArrayNode) {
   const last = node.elements[node.elements.length - 1] as ArrayNode;
 
   if (first.elements.length !== last.elements.length) {
-    issues.push({
-      code: 'invalid_type',
-      message:
+    issues.push(
+      makeIssue(
         'First and last positions of a Polygon or MultiPolygon’s ring should be the same.',
-      loc: first.loc,
-    });
+        node
+      )
+    );
     return;
   }
 
@@ -19,12 +19,12 @@ export function enforceSamePosition(issues: HintIssue[], node: ArrayNode) {
     const firstValue = (first.elements[j] as NumberNode).value;
     const secondValue = (last.elements[j] as NumberNode).value;
     if (firstValue !== secondValue) {
-      issues.push({
-        code: 'invalid_type',
-        message:
+      issues.push(
+        makeIssue(
           'First and last positions of a Polygon or MultiPolygon’s ring should be the same.',
-        loc: last.elements[j].loc,
-      });
+          last.elements[j]
+        )
+      );
       return;
     }
   }

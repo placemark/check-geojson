@@ -1,15 +1,13 @@
-import { HintIssue } from './errors';
+import { HintIssue, makeIssue } from './errors';
 import { enforcePosition } from './enforce_position';
 import { enforceSamePosition } from './enforce_same_position';
 import { Node, ArrayNode } from '@humanwhocodes/momoa';
 
 function getArray(issues: HintIssue[], node: Node): ArrayNode | null {
   if (node.type !== 'Array') {
-    issues.push({
-      code: 'invalid_type',
-      message: 'Expected to find an array of positions here.',
-      loc: node.loc,
-    });
+    issues.push(
+      makeIssue('Expected to find an array of positions here.', node)
+    );
     return null;
   }
   return node;
@@ -30,11 +28,12 @@ export function enforcePositionArray(
 
   for (let element of node.elements) {
     if (element.type !== 'Array') {
-      issues.push({
-        code: 'invalid_type',
-        message: 'Expected to find a position here, found another type.',
-        loc: element.loc,
-      });
+      issues.push(
+        makeIssue(
+          'Expected to find a position here, found another type.',
+          element
+        )
+      );
       return;
     } else {
       enforcePosition(issues, element);
@@ -44,21 +43,17 @@ export function enforcePositionArray(
   switch (kind) {
     case 'LineString': {
       if (node.elements.length < 2) {
-        issues.push({
-          code: 'invalid_type',
-          message: 'Expected to find two or more positions here.',
-          loc: node.loc,
-        });
+        issues.push(
+          makeIssue('Expected to find two or more positions here.', node)
+        );
       }
       break;
     }
     case 'Polygon':
       if (node.elements.length < 4) {
-        issues.push({
-          code: 'invalid_type',
-          message: 'Expected to find four or more positions here.',
-          loc: node.loc,
-        });
+        issues.push(
+          makeIssue('Expected to find four or more positions here.', node)
+        );
       }
       enforceSamePosition(issues, node);
       break;

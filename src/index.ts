@@ -1,6 +1,6 @@
 import { parse, evaluate, Node, ObjectNode } from '@humanwhocodes/momoa';
 import { GeoJSON } from 'geojson';
-import { HintIssue, HintError } from './errors';
+import { HintIssue, HintError, makeIssue } from './errors';
 import {
   GeoJSONTypeSet,
   GEOJSON_TYPES,
@@ -88,31 +88,21 @@ const checkFeature: Checker = (issues, node) => {
     idMember &&
     !(idMember.value.type === 'String' || idMember.value.type === 'Number')
   ) {
-    issues.push({
-      code: 'invalid_type',
-      message: `The Feature id must be a string or number.`,
-      loc: idMember.loc,
-    });
+    issues.push(makeIssue(`The Feature id must be a string or number.`, node));
   }
 
   const properties = getMemberValue(issues, node, 'properties');
   if (!properties) {
-    issues.push({
-      code: 'invalid_type',
-      message: `The properties member is missing.`,
-      loc: node.loc,
-    });
+    issues.push(makeIssue(`The properties member is missing.`, node));
     return;
   }
 
   const { type } = properties;
 
   if (!(type === 'Object' || type === 'Null')) {
-    issues.push({
-      code: 'invalid_type',
-      message: `The Feature properties member can be an object or null.`,
-      loc: node.loc,
-    });
+    issues.push(
+      makeIssue(`The Feature properties member can be an object or null.`, node)
+    );
   }
 };
 
@@ -168,8 +158,10 @@ export const check = (jsonStr: string): GeoJSON => {
     });
   } catch (e) {
     issues.push({
-      code: 'invalid_json',
-      line: e.line,
+      message: `Invalid JSON: ${e.message}`,
+      from: 0,
+      to: 0,
+      severity: 'error',
     });
   }
   if (ast) checkObject(issues, ast.body);

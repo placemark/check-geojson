@@ -50,8 +50,11 @@ describe('check', () => {
       );
     } catch (e) {
       expect(e.issues[0]).toEqual({
-        code: 'invalid_json',
-        line: 3,
+        message:
+          'Invalid JSON: Unexpected token String("coordinates") found. (3:5)',
+        from: 0,
+        to: 0,
+        severity: 'error',
       });
     }
   });

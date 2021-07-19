@@ -8,9 +8,10 @@ export function getObject(
   if (node?.type === 'Object') return node;
   if (node) {
     issues.push({
-      code: 'invalid_type',
       message: 'This must be an object.',
-      loc: node.loc,
+      severity: 'error',
+      from: node.loc.start.offset,
+      to: node.loc.end.offset,
     });
   }
   return null;

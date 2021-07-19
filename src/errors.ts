@@ -1,18 +1,20 @@
-import { LocRange } from '@humanwhocodes/momoa';
+import { Node } from '@humanwhocodes/momoa';
 
-interface HintIssueType {
-  code: 'invalid_type';
-  loc: LocRange;
-  // code: ZodIssueCode;
-  message?: string;
+export interface HintIssue {
+  from: number;
+  to: number;
+  severity: 'error';
+  message: string;
 }
 
-interface HintJSONIssue {
-  code: 'invalid_json';
-  line: number;
+export function makeIssue(message: string, node: Node): HintIssue {
+  return {
+    message,
+    severity: 'error',
+    from: node.loc.start.offset,
+    to: node.loc.end.offset,
+  };
 }
-
-export type HintIssue = HintIssueType | HintJSONIssue;
 
 export class HintError extends Error {
   issues: HintIssue[] = [];
