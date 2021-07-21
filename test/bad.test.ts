@@ -1,4 +1,4 @@
-import { check, HintError } from '../src';
+import { check, getIssues, HintError } from '../src';
 import * as Path from 'path';
 import { readFileSync, readdirSync } from 'fs';
 
@@ -8,6 +8,22 @@ describe('check', () => {
     expect(() => check(JSON.stringify({}))).toThrow(HintError);
     expect(() => check(JSON.stringify({ type: ['foo'] }))).toThrow(HintError);
     expect(() => check(JSON.stringify({ type: 'foo' }))).toThrow(HintError);
+    expect(getIssues(JSON.stringify({}))).toEqual([
+      {
+        from: 0,
+        message: 'This GeoJSON object is missing its type member.',
+        severity: 'error',
+        to: 2,
+      },
+    ]);
+    expect(getIssues(JSON.stringify({ type: 'test' }))).toEqual([
+      {
+        from: 0,
+        message: 'This type of GeoJSON object is not allowed here.',
+        severity: 'error',
+        to: 15,
+      },
+    ]);
   });
 
   it('invalid coordinates', () => {

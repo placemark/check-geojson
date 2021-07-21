@@ -19,9 +19,10 @@ export function getType(
   });
 
   if (!typeMember) {
-    throw new HintError([
-      makeIssue('This GeoJSON object is missing its type member.', node),
-    ]);
+    issues.push(
+      makeIssue('This GeoJSON object is missing its type member.', node)
+    );
+    return {};
   }
 
   const value = typeMember.value;
