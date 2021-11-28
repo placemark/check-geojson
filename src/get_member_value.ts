@@ -1,17 +1,14 @@
-import { HintIssue, makeIssue } from './errors';
+import { makeIssue } from './errors';
 import { ObjectNode } from '@humanwhocodes/momoa';
+import { Ctx } from './types';
 
-export function getMemberValue(
-  issues: HintIssue[],
-  node: ObjectNode,
-  name: string
-) {
-  const member = node.members.find(member => {
+export function getMemberValue(ctx: Ctx, node: ObjectNode, name: string) {
+  const member = node.members.find((member) => {
     return member.name.value === name;
   });
 
   if (!member) {
-    issues.push(
+    ctx.issues.push(
       makeIssue(
         `This GeoJSON object requires a ${name} member but it is missing.`,
         node

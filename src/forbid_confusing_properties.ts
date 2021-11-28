@@ -1,16 +1,17 @@
-import { HintIssue, makeIssue } from './errors';
+import { makeIssue } from './errors';
 import { ObjectNode, MemberNode } from '@humanwhocodes/momoa';
+import { Ctx } from './types';
 
 type PropertiesFrom = 'Feature' | 'FeatureCollection' | 'Geometry';
 
 function forbidProperty(
-  issues: HintIssue[],
+  ctx: Ctx,
   member: MemberNode,
   propertiesFrom: PropertiesFrom,
   name: string
 ) {
   if (member.name.value === name) {
-    issues.push(
+    ctx.issues.push(
       makeIssue(
         `${propertiesFrom} objects cannot contain a member named ${member.name.value}`,
         member.name
@@ -23,16 +24,16 @@ const FORBIDDEN_PROPERTIES = {
   Geometry: ['properties', 'geometry', 'features'],
   Feature: ['features'],
   FeatureCollection: ['properties', 'coordinates'],
-};
+} as const;
 
 export function forbidConfusingProperties(
-  issues: HintIssue[],
+  ctx: Ctx,
   node: ObjectNode,
   propertiesFrom: PropertiesFrom
 ) {
-  for (let member of node.members) {
-    for (let property of FORBIDDEN_PROPERTIES[propertiesFrom]) {
-      forbidProperty(issues, member, propertiesFrom, property);
+  for (const member of node.members) {
+    for (const property of FORBIDDEN_PROPERTIES[propertiesFrom]) {
+      forbidProperty(ctx, member, propertiesFrom, property);
     }
   }
 }

@@ -1,16 +1,11 @@
 import { Node } from '@humanwhocodes/momoa';
-
-export interface HintIssue {
-  from: number;
-  to: number;
-  severity: 'error';
-  message: string;
-}
+import { HintIssue } from './types';
 
 export function makeIssue(message: string, node: Node): HintIssue {
   return {
     message,
     severity: 'error',
+    // node,
     from: node.loc.start.offset,
     to: node.loc.end.offset,
   };
