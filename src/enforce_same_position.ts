@@ -1,7 +1,8 @@
-import { HintIssue, makeIssue } from './errors';
+import { makeIssue } from './errors';
 import { ArrayNode, NumberNode } from '@humanwhocodes/momoa';
+import { Ctx } from './types';
 
-export function enforceSamePosition(issues: HintIssue[], node: ArrayNode) {
+export function enforceSamePosition(ctx: Ctx, node: ArrayNode) {
   const first = node.elements[0] as ArrayNode;
   const last = node.elements[node.elements.length - 1] as ArrayNode;
   const len = Math.max(first.elements.length, last.elements.length);
@@ -10,7 +11,7 @@ export function enforceSamePosition(issues: HintIssue[], node: ArrayNode) {
     const firstValue = (first.elements[j] as NumberNode | undefined)?.value;
     const secondValue = (last.elements[j] as NumberNode | undefined)?.value;
     if (firstValue !== secondValue) {
-      issues.push(
+      ctx.issues.push(
         makeIssue(
           'First and last positions of a Polygon or MultiPolygon’s ring should be the same.',
           first

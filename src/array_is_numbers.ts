@@ -1,14 +1,11 @@
 import { Node } from '@humanwhocodes/momoa';
-import { HintIssue, makeIssue } from './errors';
+import { makeIssue } from './errors';
+import { Ctx } from './types';
 
-export function arrayIsNumbers(
-  issues: HintIssue[],
-  elements: Node[],
-  name: string
-) {
-  for (let element of elements) {
+export function arrayIsNumbers(ctx: Ctx, elements: Node[], name: string) {
+  for (const element of elements) {
     if (element.type !== 'Number') {
-      issues.push(
+      ctx.issues.push(
         makeIssue(`Each element in a ${name} must be a number.`, element)
       );
       return;

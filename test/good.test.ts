@@ -109,14 +109,14 @@ describe('check', () => {
         ],
       },
     ];
-    for (let obj of examples) {
+    for (const obj of examples) {
       check(JSON.stringify(obj));
       expect(check(JSON.stringify(obj))).toEqual(obj);
     }
   });
   describe('works with fixtures', () => {
     const fixtureNames = readdirSync(Path.join(__dirname, './fixture/good/'));
-    for (let name of fixtureNames) {
+    for (const name of fixtureNames) {
       it(`fixture: ${name}`, () => {
         const input = readFileSync(
           Path.join(__dirname, './fixture/good/', name),

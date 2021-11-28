@@ -77,7 +77,7 @@ describe('check', () => {
 
   describe('works with fixtures', () => {
     const fixtureNames = readdirSync(Path.join(__dirname, './fixture/bad/'));
-    for (let name of fixtureNames) {
+    for (const name of fixtureNames) {
       it(`fixture: ${name}`, () => {
         const input = readFileSync(
           Path.join(__dirname, './fixture/bad/', name),

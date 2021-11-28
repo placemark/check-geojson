@@ -3,6 +3,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "module": "dist/check-geojson.esm.js",
   "files": [
     "dist",
     "src"
@@ -14,18 +15,15 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build --target node",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "husky install && tsdx build --target node",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
+    "build": "microbundle",
+    "test": "jest",
+    "lint": "eslint . && tsc --noEmit",
+    "prepare": "husky install && microbundle"
   },
   "peerDependencies": {},
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "yarn lint"
     }
   },
   "prettier": {
@@ -36,28 +34,21 @@
   },
   "name": "@placemarkio/check-geojson",
   "author": "Tom MacWright",
-  "module": "dist/check-geojson.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/check-geojson.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/check-geojson.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^5.0.1",
+    "@swc/core": "^1.2.108",
+    "@swc/jest": "^0.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.2.0",
     "husky": "^7.0.1",
-    "size-limit": "^5.0.1",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.3.0",
+    "jest": "^27.3.1",
+    "microbundle": "^0.14.1",
     "typescript": "^4.3.5"
   },
   "dependencies": {
     "@humanwhocodes/momoa": "^2.0.2",
     "@types/geojson": "^7946.0.7",
+    "@types/jest": "^27.0.2",
     "type-fest": "^1.2.1"
   }
 }
