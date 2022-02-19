@@ -181,9 +181,9 @@ function checkInternal(jsonStr: string): {
       ranges: true,
     });
     checkObject(ctx, ast.body);
-  } catch (e) {
+  } catch (e: unknown) {
     ctx.issues.push({
-      message: `Invalid JSON: ${e.message}`,
+      message: `Invalid JSON: ${(e as Error).message}`,
       from: 0,
       to: 0,
       severity: 'error',
