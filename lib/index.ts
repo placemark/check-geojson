@@ -193,16 +193,42 @@ function checkInternal(jsonStr: string): {
   return { ast, ctx };
 }
 
+/**
+ * Given a string of possibly valid GeoJSON data,
+ * return an array of issues. This will handle invalid JSON
+ * data, invalid GeoJSON structure, and anything else that will
+ * prevent this string of data from being parsed and
+ * displayed on a map.
+ *
+ * check-geojson looks for invalid structure and invalid syntax.
+ * It does not check for complex geometry issues like
+ * self-intersections, which are hard to detect and don't cause
+ * failures in most display & manipulation software.
+ */
 export const getIssues = (jsonStr: string): HintIssue[] => {
   return checkInternal(jsonStr).ctx.issues;
 };
 
+/**
+ * This catches the same issues as `getIssues`, but instead
+ * of returning a list of issues, it will throw a HintError
+ * if any errors are detected, and return the parsed
+ * GeoJSON as an object if no errors are.
+ */
 export const check = (jsonStr: string): GeoJSON => {
   const { ctx, ast } = checkInternal(jsonStr);
   if (ctx.issues.length || !ast) throw new HintError(ctx.issues);
   return evaluate(ast);
 };
 
+/**
+ * This method will allow you to parse a possibly-valid
+ * bit of GeoJSON data. If nothing can be parsed, it will
+ * throw a HintError. However, if the GeoJSON can be parsed,
+ * it will return an object with valid features
+ * and rejected features along with the reasons why those
+ * features were rejected.
+ */
 export const scavenge = (
   jsonStr: string
 ): {
