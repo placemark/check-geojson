@@ -1,0 +1,44 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@placemarkio/check-geojson</title><meta name="description" content="Documentation for @placemarkio/check-geojson"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@placemarkio/check-geojson</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@placemarkio/check-geojson</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#check-geojson" id="check-geojson" style="color: inherit; text-decoration: none;">
+  <h1>check-geojson</h1>
+</a>
+<p><em>check-geojson development is supported by 🌎 <a href="https://placemark.io/">placemark.io</a></em></p>
+<p>geojsonhint for 2021.</p>
+<p>I started working on geojsonhint in 2014. It&#39;s a pretty useful project.
+But it has been stagnant for a long time now, and has some annoying long-term
+issues.</p>
+<p>check-geojson is intended to be a full successor for geojsonhint. Like geojsonhint,
+it is tailored to a particular usecase: writing GeoJSON by hand, or quickly sussing
+out issues in GeoJSON that you&#39;ve received.</p>
+
+<a href="#main-differences-from-geojsonhint" id="main-differences-from-geojsonhint" style="color: inherit; text-decoration: none;">
+  <h3>Main differences from geojsonhint</h3>
+</a>
+<ul>
+<li>Actively maintained</li>
+<li>Written in TypeScript and includes types</li>
+<li>Uses <a href="https://github.com/humanwhocodes/momoa">momoa</a> to parse JSON instead of a homemade
+parser. This is probably the biggest one. jsonlint-lines was a hack, which I created
+because I could not find a single parser that actually parsed JSON and gave line numbers
+for values. momoa is much better than that hack, and using it makes line-level errors
+much cleaner.</li>
+</ul>
+<p>Unlike geojsonhint, this checker <em>only</em> produces errors, not warnings. So things
+that geojsonhint would warn about, like:</p>
+<ul>
+<li>excessive coordinate precision</li>
+<li>right-hand rule compliance</li>
+</ul>
+<p>This does not check for. Additionally, the <code>crs</code> member is ignored by this tool: as of
+the latest GeoJSON specification, this is <a href="https://datatracker.ietf.org/doc/html/rfc7946#appendix-B.1">not used</a>.</p>
+<p>We&#39;re using the same test fixtures as geojsonhint as a starter.</p>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h3>Usage</h3>
+</a>
+<p><em>Not finalized yet</em></p>
+<pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">check</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;check-geojson&quot;</span><br/><br/><span class="hl-0">try</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">parseValue</span><span class="hl-1"> = </span><span class="hl-6">check</span><span class="hl-1">(</span><span class="hl-3">&#39;… geojson string …&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">} </span><span class="hl-0">catch</span><span class="hl-1"> (</span><span class="hl-2">e</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-7">/// e.issues</span><br/><span class="hl-1">}</span>
+</code></pre>
+<hr>
+<p><a href="https://codeclimate.com/repos/60a64f6aa449b13bc40002bd/maintainability"><img src="https://api.codeclimate.com/v1/badges/0a1d1c0755b9e67406f1/maintainability" alt="Maintainability"></a> <a href="https://codeclimate.com/repos/60a64f6aa449b13bc40002bd/test_coverage"><img src="https://api.codeclimate.com/v1/badges/0a1d1c0755b9e67406f1/test_coverage" alt="Test Coverage"></a></p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-class"><a href="classes/HintError.html" class="tsd-kind-icon">Hint<wbr/>Error</a></li><li class="tsd-kind-interface"><a href="interfaces/HintIssue.html" class="tsd-kind-icon">Hint<wbr/>Issue</a></li><li class="tsd-kind-function"><a href="modules.html#check" class="tsd-kind-icon">check</a></li><li class="tsd-kind-function"><a href="modules.html#getIssues" class="tsd-kind-icon">get<wbr/>Issues</a></li><li class="tsd-kind-function"><a href="modules.html#scavenge" class="tsd-kind-icon">scavenge</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

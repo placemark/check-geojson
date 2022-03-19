@@ -12,6 +12,8 @@ check-geojson is intended to be a full successor for geojsonhint. Like geojsonhi
 it is tailored to a particular usecase: writing GeoJSON by hand, or quickly sussing
 out issues in GeoJSON that you've received.
 
+## [📕 API Documentation](https://placemark.github.io/check-geojson/)
+
 ### Main differences from geojsonhint
 
 - Actively maintained
