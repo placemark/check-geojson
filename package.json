@@ -53,5 +53,8 @@
     "type-fest": "^2.12.1",
     "typedoc": "^0.22.13",
     "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "standard-version": "^9.3.2"
   }
 }
