@@ -1,4 +1,4 @@
-import { check } from '../src';
+import { check } from '../lib';
 import * as Path from 'path';
 import { readFileSync, readdirSync } from 'fs';
 

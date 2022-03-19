@@ -1,4 +1,4 @@
-import { scavenge } from '../src';
+import { scavenge } from '../lib';
 
 describe('scavenge', () => {
   it('partially correct fc', () => {

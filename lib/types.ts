@@ -38,8 +38,8 @@ export const GEOJSON_GEOMETRY_TYPES_EX_GEOMETRY_COLLECTION = new Set<
   'MultiLineString',
 ]);
 
-export const GEOJSON_TYPES = new Set<GeoJSON['type']>([
-  ...GEOJSON_GEOMETRY_TYPES,
+export const GEOJSON_TYPES = new Set<GeoJSON['type']>(
+  Array.from(GEOJSON_GEOMETRY_TYPES).concat([
   'Feature',
   'FeatureCollection',
-]);
+]));

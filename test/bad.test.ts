@@ -1,4 +1,4 @@
-import { check, getIssues, HintError } from '../src';
+import { check, getIssues, HintError } from '../lib';
 import * as Path from 'path';
 import { readFileSync, readdirSync } from 'fs';
 

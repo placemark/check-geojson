@@ -3,10 +3,11 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "source": "lib/index.ts",
   "module": "dist/check-geojson.esm.js",
   "files": [
     "dist",
-    "src"
+    "lib"
   ],
   "publishConfig": {
     "access": "public"
@@ -18,7 +19,7 @@
     "build": "microbundle",
     "test": "jest",
     "lint": "eslint . && tsc --noEmit",
-    "prepare": "husky install && microbundle"
+    "prepare": "husky install && npm run build"
   },
   "peerDependencies": {},
   "husky": {
@@ -35,20 +36,21 @@
   "name": "@placemarkio/check-geojson",
   "author": "Tom MacWright",
   "devDependencies": {
+    "@humanwhocodes/momoa": "^2.0.3",
     "@swc/core": "^1.2.143",
     "@swc/jest": "^0.2.17",
+    "@types/geojson": "^7946.0.8",
+    "@types/jest": "^27.4.0",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
     "eslint": "^8.9.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "microbundle": "^0.14.2",
+    "prettier": "^2.6.0",
+    "tslib": "^2.3.1",
+    "type-fest": "^2.12.0",
+    "typedoc": "^0.22.13",
     "typescript": "^4.5.5"
-  },
-  "dependencies": {
-    "@humanwhocodes/momoa": "^2.0.3",
-    "@types/geojson": "^7946.0.8",
-    "@types/jest": "^27.4.0",
-    "type-fest": "^2.12.0"
   }
 }
