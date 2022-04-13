@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "source": "lib/index.ts",
-  "module": "dist/check-geojson.esm.js",
+  "module": "dist/index.esm.js",
   "files": [
     "dist",
     "lib"
