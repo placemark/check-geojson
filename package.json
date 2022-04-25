@@ -19,8 +19,9 @@
     "build": "microbundle",
     "doc": "typedoc --options ./typedoc.json",
     "test": "jest",
+    "test:ci": "jest --reporters=github-actions",
     "lint": "eslint . && tsc --noEmit",
-    "prepare": "husky install && npm run build && npm run doc"
+    "prepare": "husky install && npm run build && npm run doc && cp CNAME docs/CNAME"
   },
   "peerDependencies": {},
   "husky": {
@@ -37,22 +38,22 @@
   "name": "@placemarkio/check-geojson",
   "author": "Tom MacWright",
   "devDependencies": {
-    "@humanwhocodes/momoa": "^2.0.3",
-    "@swc/core": "^1.2.159",
+    "@humanwhocodes/momoa": "^2.0.4",
+    "@swc/core": "^1.2.171",
     "@swc/jest": "^0.2.20",
     "@types/geojson": "^7946.0.8",
     "@types/jest": "^27.4.1",
-    "@typescript-eslint/eslint-plugin": "^5.15.0",
-    "@typescript-eslint/parser": "^5.15.0",
-    "eslint": "^8.11.0",
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/parser": "^5.21.0",
+    "eslint": "^8.14.0",
     "husky": "^7.0.4",
-    "jest": "^27.5.1",
+    "jest": "^28.0.0",
     "microbundle": "^0.14.2",
-    "prettier": "^2.6.0",
-    "tslib": "^2.3.1",
-    "type-fest": "^2.12.1",
-    "typedoc": "^0.22.13",
-    "typescript": "^4.6.2"
+    "prettier": "^2.6.2",
+    "tslib": "^2.4.0",
+    "type-fest": "^2.12.2",
+    "typedoc": "^0.22.15",
+    "typescript": "^4.6.3"
   },
   "dependencies": {
     "standard-version": "^9.3.2"
