@@ -21,7 +21,7 @@
     "test": "jest",
     "test:ci": "jest --reporters=github-actions",
     "lint": "eslint . && tsc --noEmit",
-    "prepare": "husky install && npm run build && npm run doc"
+    "prepare": "husky install && npm run build && npm run doc && cp CNAME docs/CNAME"
   },
   "peerDependencies": {},
   "husky": {
