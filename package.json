@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "source": "lib/index.ts",
-  "module": "dist/index.esm.js",
+  "module": "dist/index.esm.mjs",
   "files": [
     "dist",
     "lib"
@@ -39,21 +39,21 @@
   "author": "Tom MacWright",
   "devDependencies": {
     "@humanwhocodes/momoa": "^2.0.4",
-    "@swc/core": "^1.2.171",
-    "@swc/jest": "^0.2.20",
+    "@swc/core": "^1.2.189",
+    "@swc/jest": "^0.2.21",
     "@types/geojson": "^7946.0.8",
-    "standard-version": "^9.3.2",
-    "@types/jest": "^27.4.1",
-    "@typescript-eslint/eslint-plugin": "^5.21.0",
-    "@typescript-eslint/parser": "^5.21.0",
-    "eslint": "^8.14.0",
-    "husky": "^7.0.4",
-    "jest": "^28.0.0",
-    "microbundle": "^0.14.2",
+    "@types/jest": "^27.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.16.0",
+    "husky": "^8.0.1",
+    "jest": "^28.1.0",
+    "microbundle": "^0.15.0",
     "prettier": "^2.6.2",
+    "standard-version": "^9.5.0",
     "tslib": "^2.4.0",
     "type-fest": "^2.12.2",
     "typedoc": "^0.22.15",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.4"
   }
 }
