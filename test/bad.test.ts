@@ -48,6 +48,12 @@ describe('check', () => {
     ).toThrow(HintError);
   });
 
+  it('geometry collection with null', () => {
+    expect(() =>
+      check(JSON.stringify({ type: 'GeometryCollection', geometries: [null] }))
+    ).toThrow(HintError);
+  });
+
   it('forbidden properties', () => {
     expect(() =>
       check(
