@@ -1,4 +1,5 @@
 import { check } from '../lib';
+import { describe, expect, it } from 'vitest';
 import * as Path from 'path';
 import { readFileSync, readdirSync } from 'fs';
 

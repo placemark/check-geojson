@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { check, getIssues, HintError } from '../lib';
 import * as Path from 'path';
 import { readFileSync, readdirSync } from 'fs';
@@ -6,6 +7,11 @@ describe('check', () => {
   it('invalid root object', () => {
     expect(() => check(JSON.stringify([]))).toThrow(HintError);
     expect(() => check(JSON.stringify({}))).toThrow(HintError);
+    try {
+      check('{"foo": 1.}');
+    } catch (e) {
+      expect(e.issues).toHaveLength(1);
+    }
     expect(() => check(JSON.stringify({ type: ['foo'] }))).toThrow(HintError);
     expect(() => check(JSON.stringify({ type: 'foo' }))).toThrow(HintError);
     expect(getIssues(JSON.stringify({}))).toEqual([
