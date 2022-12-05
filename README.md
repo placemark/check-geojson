@@ -35,12 +35,19 @@ the latest GeoJSON specification, this is [not used](https://datatracker.ietf.or
 
 We're using the same test fixtures as geojsonhint as a starter.
 
+### Install
+
+```shell
+pnpm add @placemarkio/check-geojson
+yarn add @placemarkio/check-geojson
+```
+
 ### Usage
 
 _Not finalized yet_
 
 ```ts
-import { check } from "check-geojson"
+import { check } from "@placemarkio/check-geojson"
 
 try {
   const parseValue = check('… geojson string …')
