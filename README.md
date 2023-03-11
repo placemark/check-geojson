@@ -2,7 +2,7 @@
 
 _check-geojson development is supported by 🌎 [placemark.io](https://placemark.io/)_
 
-geojsonhint for 2021.
+geojsonhint for 2023.
 
 I started working on geojsonhint in 2014. It's a pretty useful project.
 But it has been stagnant for a long time now, and has some annoying long-term
