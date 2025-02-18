@@ -172,7 +172,7 @@ function checkInternal(jsonStr: string): {
   ctx: Ctx;
 } {
   if (typeof jsonStr !== 'string') {
-    throw 'Input must be a string. (Use JSON.stringify first.)';
+    throw new TypeError('Input must be a string. (Use JSON.stringify first.)');
   }
   const ctx: Ctx = {
     issues: [],
