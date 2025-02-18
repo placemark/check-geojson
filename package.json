@@ -47,7 +47,6 @@
 		"husky": "^8.0.1",
 		"microbundle": "^0.15.0",
 		"prettier": "^2.6.2",
-		"standard-version": "^9.5.0",
 		"tslib": "^2.4.0",
 		"type-fest": "^2.12.2",
 		"typedoc": "^0.22.15",
