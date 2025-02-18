@@ -171,6 +171,9 @@ function checkInternal(jsonStr: string): {
   ast: DocumentNode | undefined;
   ctx: Ctx;
 } {
+  if (typeof jsonStr !== 'string') {
+    throw 'Input must be a string. (Use JSON.stringify first.)';
+  }
   const ctx: Ctx = {
     issues: [],
     valid: [],
