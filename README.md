@@ -1,16 +1,10 @@
 # check-geojson
 
-_check-geojson development is supported by 🌎 [placemark.io](https://placemark.io/)_
+A spiritual successor to [geojsonhint](https://github.com/mapbox/geojsonhint), which is no longer maintained.
 
-geojsonhint for 2023.
+check-geojson is a parser and validator for GeoJSON strings. It is tailored to the use cases of validating user-generated GeoJSON content, or troubleshooting GeoJSON that you've received.
 
-I started working on geojsonhint in 2014. It's a pretty useful project.
-But it has been stagnant for a long time now, and has some annoying long-term
-issues.
-
-check-geojson is intended to be a full successor for geojsonhint. Like geojsonhint,
-it is tailored to a particular usecase: writing GeoJSON by hand, or quickly sussing
-out issues in GeoJSON that you've received.
+_Note: the API is not yet stable._
 
 ## [📕 API Documentation](http://check-geojson.docs.placemark.io/)
 
@@ -44,15 +38,23 @@ yarn add @placemarkio/check-geojson
 
 ### Usage
 
-_Not finalized yet_
-
 ```ts
 import { check } from "@placemarkio/check-geojson"
 
+let geojsonObject;
 try {
-  const parseValue = check('… geojson string …')
+  geojsonObject = check('… geojson string …')
 } catch (e) {
   /// e.issues
+}
+```
+
+If your GeoJSON is already an object, you will need to convert it to a string first. geojson-check will re-parse it. You should consider the performance penalty of this.
+
+```ts
+const issues = getIssues(JSON.stringify(geojsonObject));
+if (issues.length > 0) {
+  // ...
 }
 ```
 
