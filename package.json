@@ -1,11 +1,14 @@
 {
-	"version": "0.1.12",
+	"version": "0.1.13",
 	"license": "MIT",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
 	"source": "lib/index.ts",
 	"module": "dist/index.esm.mjs",
-	"files": ["dist", "lib"],
+	"files": [
+		"dist",
+		"lib"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/placemark/check-geojson.git"
